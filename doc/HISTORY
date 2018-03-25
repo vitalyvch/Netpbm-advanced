@@ -4,12 +4,25 @@ Netpbm.
 CHANGE HISTORY 
 --------------
 
-17.12.30 BJH  Release 10.80.02
+18.02.17 BJH  Release 10.81.03
 
-sldtoppm: fix bug: wild memory accesses, weird messages when
-              invalid input file has unterminated strings.
-              
-17.10.21 BJH  Release 10.80.01
+              g3topbm: Fix bug - produces invalid empty PBM image if input
+              image is empty.
+
+              mrftopbm: Fix bug - wrong error messages or output when input
+              invalidly short.
+
+18.01.20 BJH  Release 10.81.02
+
+              Build: fix compile failure on systems without strnlen (such
+              as MacOS X before 10.7).  Broken in 10.81.00 (December 2017).
+
+18.01.05 BJH  Release 10.81.01
+
+              ppmpat: Fix bug - crash or junk output with -camo or -anticamo
+              and no -color.  Introduced in Netpbm 10.78 (March 2017).
+
+17.12.30 BJH  Release 10.81.00
 
               sldtoppm: -lib and -dir don't work - always says slide not
               found.  Broken in Netpbm 10.63 (June 2013).
@@ -18,6 +31,9 @@ sldtoppm: fix bug: wild memory accesses, weird messages when
               slide file.  Broken after Netpbm 10.26 (January 2005), but no
               later than 10.35 (August 2006).
 
+              sldtoppm: fix bug: wild memory accesses, weird messages when
+              invalid input file has unterminated strings.
+              
 17.09.30 BJH  Release 10.80.00
 
               pnmtopalm: Refuse to create a compressed image with more than 8
