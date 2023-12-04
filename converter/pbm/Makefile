@@ -17,7 +17,7 @@ PORTBINARIES =	atktopbm brushtopbm cistopbm cmuwmtopbm \
 		pbmtoln03 pbmtolps \
 		pbmtomacp pbmtomatrixorbital pbmtomda pbmtomgr pbmtomrf \
 		pbmtonokia \
-		pbmtopi3 pbmtoplot pbmtopsg3 pbmtoptx pbmtowbmp \
+		pbmtopi3 pbmtoplot pbmtopsg3 pbmtosvg pbmtoptx pbmtowbmp \
 		pbmtoxbm pbmtoybm pbmtozinc \
 		pi3topbm pktopbm \
 		wbmptopbm xbmtopbm ybmtopbm	
