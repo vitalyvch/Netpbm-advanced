@@ -398,3 +398,41 @@ main(int    argc,
     
     return 0;
 }
+
+#if 0
+
+int
+main(int    argc,
+     char * argv[]) {
+
+    FILE *ifP;
+    unsigned int pages;
+    
+    struct cmdline_info cmdline;
+
+    pbm_init(&argc, argv);
+
+    parseCommandLine(argc, argv, &cmdline);
+
+    ifP = pm_openr(cmdline.inputFilespec);
+
+    printf ("%%!PS-Adobe-3.0\n");
+    if (cmdline.title)
+        printf("%%%%Title: %s\n", cmdline.title) ;
+    printf ("%%%%Creator: pbmtosvg, Copyright (C) 2023 Vitalii Chernookyi\n"
+            "%%%%Pages: (atend)\n"
+            "%%%%EndComments\n") ;
+    
+    doPages(ifP, &pages, cmdline.dpi);
+
+    printf ("%%%%Trailer\n"
+            "%%%%Pages: %u\n"
+            "%%%%EOF\n",
+            pages);
+
+    pm_close(ifP);
+    pm_close(stdout);
+    
+    return 0;
+}
+#endif
