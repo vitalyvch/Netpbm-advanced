@@ -6,6 +6,9 @@
        <vitaly.v.ch@gmail.com>
 
    Netpbm adaptation by Vitaly Chernooky Dec 2023.
+
+   This code is deeply inspired by pbmtopsg3.c written by Kristof Koehler 
+       <kristof@fachschaft.physik.uni-karlsruhe.de>
  
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
