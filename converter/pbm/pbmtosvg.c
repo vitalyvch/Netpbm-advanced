@@ -30,6 +30,14 @@
 #include "pbm.h"
 #include "shhopt.h"
 
+int
+output_svg_writer_width_height(FILE *       const fileP,
+                  const char *              const name,
+                  int                       const llx,
+                  int                       const lly,
+                  int                       const urx,
+                  int                       const ury) ;
+
 struct cmdline_info {
     /* All the information the user supplied in the command line,
        in a form easy for the program to use.
@@ -283,6 +291,7 @@ doPage(FILE *       const ifP,
     pm_message("[%u]\n", pageNum);
 
     printf ("%%%%Page: %u %u\n", pageNum, pageNum);
+#if 0
     printf ("%u %u 1 [ %f 0 0 %f 0 %u ]\n"
             "{ currentfile /ASCII85Decode filter\n"
             "  << /Columns %u /Rows %u /EndOfBlock false >> "
@@ -290,7 +299,17 @@ doPage(FILE *       const ifP,
             "  image } exec\n",
             cols, rows, dpi/72.0, -dpi/72.0, rows, 
             cols, rows) ;
-        
+#endif   
+
+/*  int
+	output_svg_writer_width_height(FILE *   const fileP,
+                  const char *              const name,
+                  int                       const llx,
+                  int                       const lly,
+                  int                       const urx,
+                  int                       const ury) ; */
+	output_svg_writer_width_height(stdout, NULL, 0, rows, cols, 0);
+
     outbitsidx = col = 0 ;
     for (row = 0 ; row < rows; ++row) {
         int lastbit, cnt ;
@@ -338,33 +357,65 @@ doPages(FILE *         const ifP,
 }
 
 
-#if 0
 int
-output_svg_writer(FILE *                    const fileP,
+output_svg_writer_header(FILE *             const fileP,
+                  const char *              const name) {
+
+#if 0
+    printf ("%%!PS-Adobe-3.0\n");
+    if (cmdline.title)
+        printf("%%%%Title: %s\n", cmdline.title) ;
+    printf ("%%%%Creator: pbmtosvg, Copyright (C) 2023 Vitalii Chernookyi\n"
+            "%%%%Pages: (atend)\n"
+            "%%%%EndComments\n") ;
+#endif
+	
+    fputs("<?xml version=\"1.0\" standalone=\"yes\"?>\n", fileP);
+
+    return 0;
+}
+
+int
+output_svg_writer_width_height(FILE *       const fileP,
                   const char *              const name,
                   int                       const llx,
                   int                       const lly,
                   int                       const urx,
-                  int                       const ury, 
-                  at_output_opts_type *     const opts,
-                  at_spline_list_array_type const shape,
-                  at_msg_func                     msg_func, 
-                  void *                    const msg_data) {
+                  int                       const ury) {
 
     int const width  = urx - llx;
     int const height = ury - lly;
 
-    fputs("<?xml version=\"1.0\" standalone=\"yes\"?>\n", fileP);
+#if 0
+    printf ("%u %u 1 [ %f 0 0 %f 0 %u ]\n"
+            "{ currentfile /ASCII85Decode filter\n"
+            "  << /Columns %u /Rows %u /EndOfBlock false >> "
+                "/CCITTFaxDecode filter\n"
+            "  image } exec\n",
+            cols, rows, dpi/72.0, -dpi/72.0, rows, 
+            cols, rows) ;
+#endif   
+
 
     fprintf(fileP, "<svg width=\"%d\" height=\"%d\">\n", width, height);
 
-    out_splines(fileP, shape, height);
+    return 0;
+}
+
+int
+output_svg_writer_tail(FILE *                    const fileP) {
+
+#if 0
+    printf ("%%%%Trailer\n"
+            "%%%%Pages: %u\n"
+            "%%%%EOF\n",
+            pages);
+#endif
 
     fputs("</svg>\n", fileP);
     
     return 0;
 }
-#endif
 
 
 int
@@ -382,19 +433,13 @@ main(int    argc,
 
     ifP = pm_openr(cmdline.inputFilespec);
 
-    printf ("%%!PS-Adobe-3.0\n");
-    if (cmdline.title)
-        printf("%%%%Title: %s\n", cmdline.title) ;
-    printf ("%%%%Creator: pbmtosvg, Copyright (C) 2023 Vitalii Chernookyi\n"
-            "%%%%Pages: (atend)\n"
-            "%%%%EndComments\n") ;
-    
+	
+	output_svg_writer_header(stdout, NULL);
+
     doPages(ifP, &pages, cmdline.dpi);
 
-    printf ("%%%%Trailer\n"
-            "%%%%Pages: %u\n"
-            "%%%%EOF\n",
-            pages);
+	output_svg_writer_tail(stdout);
+
 
     pm_close(ifP);
     pm_close(stdout);
